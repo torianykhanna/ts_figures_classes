@@ -1,11 +1,96 @@
-export interface Figure {}
+export type Shape = 'triangle' | 'circle' | 'rectangle';
+export type Color = 'red' | 'green' | 'blue';
 
-export class Triangle implements Figure {}
+export interface Figure {
+  shape: Shape;
+  color: Color;
+  getArea(): number;
+}
 
-export class Circle implements Figure {}
+function roundDown(value: number): number {
+  return Math.floor(value * 100) / 100;
+}
 
-export class Rectangle implements Figure {}
+export class Triangle implements Figure {
+  shape: Shape = 'triangle';
 
-export function getInfo(figure): string {
-  return typeof figure;
+  color: Color;
+
+  private a: number;
+
+  private b: number;
+
+  private c: number;
+
+  constructor(color: Color, a: number, b: number, c: number) {
+    if (a <= 0 || b <= 0 || c <= 0) {
+      throw new Error('Invalid triangle sides');
+    }
+
+    const max = Math.max(a, b, c);
+
+    if (max >= a + b + c - max) {
+      throw new Error('Invalid triangle sides');
+    }
+
+    this.color = color;
+    this.a = a;
+    this.b = b;
+    this.c = c;
+  }
+
+  getArea(): number {
+    const p = (this.a + this.b + this.c) / 2;
+    const area = Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c));
+
+    return roundDown(area);
+  }
+}
+export class Circle implements Figure {
+  shape: Shape = 'circle';
+
+  color: Color;
+
+  private radius: number;
+
+  constructor(color: Color, radius: number) {
+    if (radius <= 0) {
+      throw new Error('Invalid radius');
+    }
+
+    this.color = color;
+    this.radius = radius;
+  }
+
+  getArea(): number {
+    return roundDown(Math.PI * this.radius ** 2);
+  }
+}
+
+export class Rectangle implements Figure {
+  shape: Shape = 'rectangle';
+
+  color: Color;
+
+  private width: number;
+
+  private height: number;
+
+  constructor(color: Color, width: number, height: number) {
+    if (width <= 0 || height <= 0) {
+      throw new Error('Invalid rectangle sides');
+    }
+
+    this.color = color;
+    this.width = width;
+    this.height = height;
+  }
+
+  getArea(): number {
+    return roundDown(this.width * this.height);
+  }
+}
+
+export function getInfo(figure: Figure): string {
+  return `A ${figure.color} ${figure.shape} - ${figure.getArea()}`;
 }
