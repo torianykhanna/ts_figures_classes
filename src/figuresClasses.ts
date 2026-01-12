@@ -24,13 +24,15 @@ export class Triangle implements Figure {
 
   constructor(color: Color, a: number, b: number, c: number) {
     if (a <= 0 || b <= 0 || c <= 0) {
-      throw new Error('Invalid triangle sides');
+      throw new Error('Triangle sides must be positive numbers');
     }
 
     const max = Math.max(a, b, c);
 
     if (max >= a + b + c - max) {
-      throw new Error('Invalid triangle sides');
+      throw new Error(
+        'The longest side must be shorter than the sum of the other two sides',
+      );
     }
 
     this.color = color;
@@ -55,7 +57,7 @@ export class Circle implements Figure {
 
   constructor(color: Color, radius: number) {
     if (radius <= 0) {
-      throw new Error('Invalid radius');
+      throw new Error('Circle radius must be a positive number');
     }
 
     this.color = color;
